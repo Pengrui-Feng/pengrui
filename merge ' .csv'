@@ -18,16 +18,17 @@ def merge():
             f.write(fr)
     print(u'finished！')
  
-#定义函数quchong(file)，将重复的内容去掉，主要是去表头
+
+#define remove duplicates(file)，Mainly the header
  
-'''def quchong(file):
+'''def remove_dup(file):
     df = pd.read_csv(file,header=0)
     datalist = df.drop_duplicates()
     datalist.to_csv(file)
- 
-运行函数
-'''
+ '''
+
+#run main
 
 if __name__ == '__main__':
     merge()
-   # quchong("result.csv")
+   # remove_dup("result.csv")
