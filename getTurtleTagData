@@ -1,4 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Sep 30 12:59:27 2019
 
+@author: Jon ONeil
+modified by Pengrui in Sep 30 without hardcodes testing one database "tu102"
+found it needed sudo apt-get install mdb-tools
+"""
 
 import requests
 import zipfile
@@ -65,7 +72,10 @@ user_pw_file = [
 user_pw_file = ['haas','heather','tu102']
 
 # Download and export MS Access files to CSV format by table.
+'''
 for accessinfo in user_pw_file:
     getAccessFiles(createURL(accessinfo[2]),accessinfo[0],accessinfo[1])
     exportCSVFiles(accessinfo[2])
-
+'''
+getAccessFiles(createURL(user_pw_file[2]),user_pw_file[0],user_pw_file[1])
+exportCSVFiles(user_pw_file[2])
