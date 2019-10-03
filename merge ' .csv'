@@ -1,34 +1,26 @@
-Created on Mon Sep 30 12:05:31 2019
-
-@author: pengrui
+# -*- coding: utf-8 -*-
 """
-import os
+Created on Tue Oct  1 11:53:16 2019
+@author: pengrui
+
+
+"""
+
 import pandas as pd
-import glob
- 
-#define merge
- 
-def merge():
-    csv_list = glob.glob('*.csv') #View the number of csv files in the same folder
-    print(u'found %s CSV files'% len(csv_list))
-    print(u'proccessing............')
-    for i in csv_list: 
-        fr = open(i,'r').read()
-        with open('result.csv','a') as f: #Save the result as 'result.csv'
-            f.write(fr)
-    print(u'finished！')
- 
+import numpy as np
+import csv
 
-#define remove duplicates(file)，Mainly the header
- 
-'''def remove_dup(file):
-    df = pd.read_csv(file,header=0)
-    datalist = df.drop_duplicates()
-    datalist.to_csv(file)
- '''
 
-#run main
+#
+df1 = pd.read_csv("/home/zdong/PENGRUI/original_data/tu102_ctd.csv",\
+usecols=['PTT','END_DATE','MAX_DBAR','N_TEMP','lat','lon'])
+df2 = pd.read_csv("/home/zdong/PENGRUI/original_data/tu102_gps.csv",\
+usecols=['PTT','D_DATE','LAT','LON'])
 
-if __name__ == '__main__':
-    merge()
-   # remove_dup("result.csv")
+df3=pd.merge(df1,df2,left_on='PTT')
+df4=pd.concat([df1,df2],axis=1)
+
+
+
+
+df4.to_csv('combined_ctd_gps_.csv')
