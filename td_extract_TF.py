@@ -45,6 +45,7 @@ def np_datetime(m):
         dt = np.array(dt)
     return dt
 '''
+#modified on 7 Oct
 def np_datetime(m):
     if type(m) is str:
         year = int('20'+ m[6:8])
