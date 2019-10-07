@@ -3,7 +3,7 @@
 Created on Tue Oct  3 11:53:16 2019
 @author: pengrui
 
-merge two csv files
+merge two csv files from turtles including 1) "CTD" and 2) "GPS"
 """
 
 import pandas as pd
