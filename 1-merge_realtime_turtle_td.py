@@ -9,16 +9,31 @@ merge two csv files from turtles including 1) "CTD" and 2) "GPS"
 import pandas as pd
 import numpy as np
 
-
+path= '/home/zdong/PENGRUI/original_data/'
 #Read the selected columns
-df1 = pd.read_csv("/home/zdong/PENGRUI/original_data/tu102_ctd.csv",\
-usecols=['PTT','END_DATE','MAX_DBAR','N_TEMP','lat','lon'])
-df2 = pd.read_csv("/home/zdong/PENGRUI/original_data/tu102_gps.csv",\
-usecols=['PTT','D_DATE','LAT','LON'])
+dftd  = pd.read_csv(path + "tu102_ctd.csv",usecols=['PTT','END_DATE','TEMP_DBAR','TEMP_VALS','lat','lon'])
+#dfgps = pd.read_csv(path + "tu102_gps.csv",usecols=['PTT','D_DATE','LAT','LON'])
 
+
+s = dftd['TEMP_DBAR'].str.split(',').apply(pd.Series, 1).stack()
+#s.index = s.index.droplevel(-1)
+#s.name = 'TEMP_DBAR'
+
+t = dftd['TEMP_VALS'].str.split(',').apply(pd.Series, 1).stack()
+#t.index = t.index.droplevel(-1)
+
+
+s.to_csv('s.csv')
+t.to_csv('t.csv')
+
+
+
+
+'''
 #merge columns on 'PTT'
-df3=pd.merge(df1,df2,on='PTT',how='left')
+df=pd.merge(dftd,dfgps,on='PTT',how='left')
 
 
-#Output a new CSV file
-df3.to_csv('combined_ctd_gps_.csv')
+#output a new CSV file
+df.to_csv('merge_realtime_turtle_td.csv')
+'''
