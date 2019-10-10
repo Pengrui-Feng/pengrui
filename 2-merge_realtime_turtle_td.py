@@ -1,3 +1,10 @@
+'''
+Created on 10 Oct  2019
+@author: pengrui
+
+merge two csv files from turtles including 1) "CTD" and 2) "GPS"
+'''
+
 import csv
 
 path= '/home/zdong/PENGRUI/original_data/'
