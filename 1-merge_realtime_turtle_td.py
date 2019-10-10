@@ -20,5 +20,5 @@ usecols=['PTT','D_DATE','LAT','LON'])
 df3=pd.merge(df1,df2,on='PTT',how='left')
 
 
-#Create a new CSV file
+#Output a new CSV file
 df3.to_csv('combined_ctd_gps_.csv')
