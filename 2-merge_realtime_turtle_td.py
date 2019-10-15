@@ -1,11 +1,13 @@
 '''
-Created on 10 Oct  2019
+Created on 11 Oct  2019
 @author: pengrui
 
 merge two csv files from turtles including 1) "CTD" and 2) "GPS"
 '''
 
 import csv
+
+#creat dictionaries and read two csv files
 
 path= '/home/zdong/PENGRUI/original_data/'
 
@@ -43,6 +45,8 @@ with open( path + 'tu102_gps.csv',"r") as csvfile:
         dict_gps["LON"].append(row["LON"])
         #print(row['PTT'], row['D_DATE'], row['LAT'], row['LON'])         
 
+        
+#creat a new dictionary
 final_dict = {}
 final_dict["PTT"] = []
 final_dict["END_DATE"] = []
@@ -54,8 +58,7 @@ final_dict["D_DATE"] = []
 final_dict["LAT"] = []
 final_dict["LON"] = []
 
-#print(dict_ctd)
-#print(dict_gps)
+#split cols to get one row for each depth
 for i,ctd_ptt in enumerate(dict_ctd["PTT"]):
     for j,gps_ptt in enumerate(dict_gps["PTT"]):
         #print("ptt",cts_ptt, gps_ptt)
