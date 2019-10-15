@@ -46,7 +46,7 @@ with open( path + 'tu102_gps.csv',"r") as csvfile:
         #print(row['PTT'], row['D_DATE'], row['LAT'], row['LON'])         
 
         
-#creat a new dictionary
+#create a new dictionary
 final_dict = {}
 final_dict["PTT"] = []
 final_dict["END_DATE"] = []
@@ -61,7 +61,6 @@ final_dict["LON"] = []
 #split cols to get one row for each depth
 for i,ctd_ptt in enumerate(dict_ctd["PTT"]):
     for j,gps_ptt in enumerate(dict_gps["PTT"]):
-        #print("ptt",cts_ptt, gps_ptt)
         if(ctd_ptt == gps_ptt):
             list_dbar = dict_ctd["TEMP_DBAR"][i].split(",")
             list_vals = dict_ctd["TEMP_VALS"][i].split(",")
@@ -79,7 +78,7 @@ for i,ctd_ptt in enumerate(dict_ctd["PTT"]):
             break
 
 #final_dict["PTT"],final_dict["END_DATE"] ,final_dict["TEMP_DBAR"],final_dict["TEMP_VALS"] ,final_dict["lat"],final_dict["lon"] ,final_dict["D_DATE"],final_dict["LAT"] ,final_dict["LON"]
-with open("result.csv","w") as csvfile:
+with open("combined_td_gps_.csv","w") as csvfile:
     fieldnames = ['PTT', 'END_DATE', "TEMP_DBAR", "TEMP_VALS", "lat", "lon", "D_DATE", "LAT", "LON"]
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
