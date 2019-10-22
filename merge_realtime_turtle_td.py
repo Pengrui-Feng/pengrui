@@ -53,6 +53,7 @@ with open( path + 'tu102_gps.csv','r') as csvfile:
         dict_gps['gps_date'].append(gps_date)
         dict_gps['gps_time'].append(gps_time)
 
+
 #create a new dictionary
 final_dict = {}
 final_dict['PTT'] = []
@@ -66,15 +67,8 @@ final_dict['gps_date'] = []
 final_dict['gps_time'] = []
 final_dict['LAT'] = []
 final_dict['LON'] = []
-'''
-for i,ctd_date in dict_ctd['argos_date']:
-    for j,gps_date in dict_gps['gps_date']:
-        if(ctd_date == gps_date):
-            final_dict['argos_date'].append(dict_ctd['argos_date'][i])
-            final_dict['argos_time'].append(dict_ctd['argos_time'][i])
-            final_dict['gps_date'].append(dict_gps['gps_date'][j])
-            final_dict['gps_time'].append(dict_gps['gps_time'][j])
-'''
+
+
 #split cols to get one row for each depth
 for i,ctd_ptt in enumerate(dict_ctd['PTT']):
     for j,gps_ptt in enumerate(dict_gps['PTT']):
