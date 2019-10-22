@@ -9,6 +9,7 @@ Collect specified data by pandas
 
 import pandas as pd
 import numpy as np
+import csv
 
 path= '/home/zdong/'
 
@@ -18,28 +19,34 @@ df = pd.read_csv(path + "combined_td_gps_.csv",usecols=['PTT','argos_date','argo
 df['argos_date'] = pd.to_datetime(df['argos_date'])
 a = df.set_index('PTT')
 
-'''
-counts = { } #字典
-for x in df['PTT']: #PTT 为列表 
-    if  x in counts: 
-        counts[x] += 1
-    else: counts[x] = 1
-print  counts
-'''
-#
-ptt = pd.Series(df['PTT'])     
-date = pd.Series(df['argos_date'])
+#a.to_csv('ddd')
 
+
+
+#Count the number of times each turtle transmits data
+ptt = pd.Series(df['PTT'])     
 nums_ptt = ptt.value_counts() 
 nums_ptt.count()
+#
+date = pd.Series(df['argos_date'])
 nums_date = date.value_counts()
 
-a.to_csv('ddd')
 
-
-#np.datetime64('2017-08-03') - np.datetime64('2017-07-15')
-
-
-
+#
+grouped = df.groupby('PTT')['argos_date']
+date_max = grouped.max()
+date_min = grouped.min()
+         
+#with open('Summary.csv','w') as csvfile:
     
-    
+
+#dalta = pd.datetime(max) - pd.datetime(min) 
+#df['time_d'] = max - min
+
+for i in date_max:
+    for j in date_min:
+        if i == j:
+            dalta = date_max - date_min
+        print dalta
+
+
