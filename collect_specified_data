@@ -1,0 +1,45 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Oct 22 09:37:53 2019
+
+Collect specified data by pandas
+
+@author: pengrui
+"""
+
+import pandas as pd
+import numpy as np
+
+path= '/home/zdong/'
+
+
+#input csv file,
+df = pd.read_csv(path + "combined_td_gps_.csv",usecols=['PTT','argos_date','argos_time'])
+df['argos_date'] = pd.to_datetime(df['argos_date'])
+a = df.set_index('PTT')
+
+'''
+counts = { } #字典
+for x in df['PTT']: #PTT 为列表 
+    if  x in counts: 
+        counts[x] += 1
+    else: counts[x] = 1
+print  counts
+'''
+#
+ptt = pd.Series(df['PTT'])     
+date = pd.Series(df['argos_date'])
+
+nums_ptt = ptt.value_counts() 
+nums_ptt.count()
+nums_date = date.value_counts()
+
+a.to_csv('ddd')
+
+
+#np.datetime64('2017-08-03') - np.datetime64('2017-07-15')
+
+
+
+    
+    
