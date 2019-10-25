@@ -10,34 +10,30 @@ Collect specified data by pandas
 import pandas as pd
 import numpy as np
 import csv
-from pandas import datetime
-path= '/home/zdong/'
-
 
 #input csv file,
-df = pd.read_csv(path + "combined_td_gps_.csv",usecols=['PTT','argos_date','argos_time','lat_argos','lon_argos'])
+path= '/home/zdong/'
+df = pd.read_csv(path + "combined_td_gps_.csv")#,usecols=['PTT','argos_date','argos_time','lat_argos','lon_argos']
 df['argos_date'] = pd.to_datetime(df['argos_date'])
-a = df.set_index('PTT')
-
-
-
+#a = df.set_index('PTT')
 
 
 #Count the number of turtles and times each turtle transmits data
+'''
 ptt = pd.Series(df['PTT'])     
 nums_ptt = ptt.value_counts() 
 nums_ptt.count()
-#
-date = pd.Series(df['argos_date'])
-nums_date = date.value_counts()
-
+'''
+#date = pd.Series(df['argos_date'])
+#nums_date = date.value_counts()
+nums_ptt = df['PTT'].groupby(df['PTT']).count()
 
 #date
 grouped1 = df['argos_date'].groupby(df['PTT'])
 date_max = grouped1.max()
 date_min = grouped1.min()
 dalta_date = grouped1.max() - grouped1.min()
-
+dalta_date.rename(index={'PTT':'ptt', '0':'dalta'}, inplace = True)
 #lat
 grouped2 = df['lat_argos'].groupby(df['PTT'])
 lat_max = grouped2.max()
@@ -50,10 +46,29 @@ lon_max = grouped3.max()
 lon_min = grouped3.min()
 dalta_lon = grouped3.max() - grouped3.min()
 
-#with open('Summary.csv','w') as csvfile:
-    
+#gps
+gps = df['lat_gps'].groupby(df['PTT']).mean()
+r=gps.notnull()
+
+#Create a DataFrame with multiple Series
+c = pd.DataFrame(dalta_date)
+c.insert(0,'start_date',date_min)
+c.insert(1,'end_date',date_max)
+c.insert(3,'lat_min',lat_min)
+c.insert(4,'lat_max',lat_max)
+c.insert(5,'lon_min',lat_min)
+c.insert(6,'lon_max',lat_max)
+c.insert(7,'dalta_lat',dalta_lat)
+c.insert(8,'dalta_lon',dalta_lon)
+c.insert(9,'if_with_gps',r)
+#c.insert(9,'gps',gps)
+c.insert(0,'nums_ptt',nums_ptt)
 
 
 
 
-date_min.to_csv('date')
+
+
+
+
+c.to_csv('Summary.csv')
