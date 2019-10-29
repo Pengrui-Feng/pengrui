@@ -5,19 +5,20 @@ Created on 11 Oct  2019
 merge two csv files from turtles including 1) 'CTD' and 2) 'GPS'
 '''
 import pandas as pd
-import datetime
+from datetime import datetime,timedelta
 import csv
 from tqdm import tqdm
 
-path= '/home/zdong/PENGRUI/original_data/'
+path1 = '/home/zdong/PENGRUI/get_original_data/'
+path2 = '/home/zdong/PENGRUI/data_process/'
 
-df = pd.read_csv(path + 'tu102_ctd.csv')
+df = pd.read_csv(path1 + 'tu102_ctd.csv')
 df['END_DATE'] = pd.to_datetime(df['END_DATE'])
-df.to_csv(path + 'tu102_ctd.csv')
+df.to_csv(path2 + 'tu102_ctd.csv')
 
-df = pd.read_csv(path + 'tu102_gps.csv')
+df = pd.read_csv(path1 + 'tu102_gps.csv')
 df['D_DATE'] = pd.to_datetime(df['D_DATE'])
-df.to_csv(path + 'tu102_gps.csv')
+df.to_csv(path2 + 'tu102_gps.csv')
 
 
 dict_ctd = {}
@@ -28,7 +29,7 @@ dict_ctd['TEMP_VALS'] = []
 dict_ctd['lat'] = []
 dict_ctd['lon'] = []
 
-with open( path+ 'tu102_ctd.csv','r') as csvfile:
+with open( path2 + 'tu102_ctd.csv','r') as csvfile:
     reader1 = csv.DictReader(csvfile)
     for row in reader1:
         dict_ctd['PTT'].append(row['PTT'])
@@ -50,7 +51,7 @@ dict_gps['gps_date'] = []
 dict_gps['LAT'] = []
 dict_gps['LON'] = []
 
-with open( path + 'tu102_gps.csv','r') as csvfile:
+with open( path2 + 'tu102_gps.csv','r') as csvfile:
     reader2 = csv.DictReader(csvfile)
     for row in reader2:
         dict_gps['PTT'].append(row['PTT'])
@@ -79,7 +80,7 @@ final_dict['LON'] = []
 #split cols to get one row for each depth
 for i,(ctd_ptt,argos_date) in enumerate(tqdm(zip(dict_ctd['PTT'],dict_ctd['argos_date']))):
     for j,(gps_ptt,gps_date) in enumerate(zip(dict_gps['PTT'],dict_gps['gps_date'])):
-        if(ctd_ptt == gps_ptt and (datetime.datetime.strptime(argos_date,"%Y-%m-%d %H:%M:%S") - datetime.datetime.strptime(gps_date,"%Y-%m-%d %H:%M:%S")).seconds < 3600*3) :
+        if(ctd_ptt == gps_ptt and abs((datetime.strptime(argos_date,"%Y-%m-%d %H:%M:%S") - datetime.strptime(gps_date,"%Y-%m-%d %H:%M:%S")).total_seconds()) < 3600*3) :
             list_dbar = dict_ctd['TEMP_DBAR'][i].split(',')
             list_vals = dict_ctd['TEMP_VALS'][i].split(',')
             #print('split result',list_dbar,list_vals)
@@ -100,7 +101,7 @@ for i,(ctd_ptt,argos_date) in enumerate(tqdm(zip(dict_ctd['PTT'],dict_ctd['argos
 
 #final_dict['PTT'],final_dict['END_DATE'] ,final_dict['TEMP_DBAR'],final_dict['TEMP_VALS'] ,final_dict['lat'],final_dict['lon'] ,final_dict['D_DATE'],final_dict['LAT'] ,final_dict['LON']
 
-with open(path+'combined_td_gps.csv','w') as csvfile:
+with open(path2 +'combined_td_gps.csv','w') as csvfile:
     #fieldnames = ['PTT', 'argos_date', 'TEMP_DBAR', 'TEMP_VALS', 'lat', 'lon', 'D_DATE', 'LAT', 'LON']
     fieldnames = ['PTT', 'argos_date', 'depth', 'temp', 'lat_gps', 'lon_gps', 'gps_date','lat_argos', 'lon_argos']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -111,5 +112,4 @@ with open(path+'combined_td_gps.csv','w') as csvfile:
     final_dict['lon'] ,final_dict['gps_date'],final_dict['LAT'] ,final_dict['LON'])) :
         writer.writerow({'PTT': ptt, 'argos_date':argos_date, 'depth':dbar, 'temp':vals, 'lat_gps':lat1, 'lon_gps':lon1, 'gps_date':gps_date, 'lat_argos':lat, 'lon_argos':lon})
   
-
 
