@@ -2,7 +2,7 @@
 """
 Created on Tue Oct 22 09:37:53 2019
 
-Collect specified data by pandas
+Summary specified data by pandas
 
 @author: pengrui
 """
