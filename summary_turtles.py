@@ -32,45 +32,37 @@ nums_ptt = df['PTT'].groupby(df['PTT']).count()
 grouped1 = df['argos_date'].groupby(df['PTT'])
 date_max = grouped1.max()
 date_min = grouped1.min()
-dalta_date = grouped1.max() - grouped1.min()
-#dalta_date.rename(index={'PTT':'ptt', ' ':'dalta'}, inplace = True)
+delta_date = grouped1.max() - grouped1.min()
+
 #lat
 grouped2 = df['lat_argos'].groupby(df['PTT'])
 lat_max = grouped2.max()
 lat_min = grouped2.min()
-dalta_lat = grouped2.max() - grouped2.min()
+delta_lat = grouped2.max() - grouped2.min()
 
 #lon
 grouped3 = df['lon_argos'].groupby(df['PTT'])
 lon_max = grouped3.max()
 lon_min = grouped3.min()
-dalta_lon = grouped3.max() - grouped3.min()
+delta_lon = grouped3.max() - grouped3.min()
 
 #gps
 gps = df['lat_gps'].groupby(df['PTT']).mean()
 r=gps.notnull()
 
 #Create a DataFrame with multiple Series
-c = pd.DataFrame(dalta_date)
-c.rename(columns={ '0':'dalta'}, inplace = True)
-c.insert(0,'start_date',date_min)
-c.insert(1,'end_date',date_max)
-c.insert(3,'lat_min',lat_min)
-c.insert(4,'lat_max',lat_max)
-c.insert(5,'lon_min',lat_min)
-c.insert(6,'lon_max',lat_max)
-c.insert(7,'delta_lat',dalta_lat)
-c.insert(8,'delta_lon',dalta_lon)
-c.insert(9,'if_with_gps',r)
-#c.insert(9,'gps',gps)
-c.insert(0,'nums_ptt',nums_ptt)
+c = pd.DataFrame()
+c['nums_ptt']=pd.Series(nums_ptt)
+c['start_date']=pd.Series(date_min)
+c['end_date']=pd.Series(date_max)
+c['length_of_track']=pd.Series(delta_date)
+c['lat_min']=pd.Series(lat_min)
+c['lat_max']=pd.Series(lat_max)
+c['lon_min']=pd.Series(lon_min)
+c['lon_max']=pd.Series(lon_max)
+c['delta_lat']=pd.Series(delta_lat)
+c['delta_lon']=pd.Series(delta_lon)
+c['if_with_gps']=pd.Series(r)
 
 
 c.to_csv('Summary.csv')
-
-
-#modify the name of columns
-d = pd.read_csv('Summary.csv')
-d.columns = ['ptt','nums_ptt','start_date','end_date','length_of_track','lat_min','lat_max','lon_min','lon_max',
-             'delta_lat','delta_lon','if_with_gps']
-d.to_csv('Summary.csv')
