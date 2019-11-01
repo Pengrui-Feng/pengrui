@@ -76,13 +76,14 @@ final_dict['lon'] = []
 final_dict['gps_date'] = []
 final_dict['LAT'] = []
 final_dict['LON'] = []
-
+num=0
 #split cols to get one row for each depth
 for i,(ctd_ptt,argos_date) in enumerate(tqdm(zip(dict_ctd['PTT'],dict_ctd['argos_date']))):
     for j,(gps_ptt,gps_date) in enumerate(zip(dict_gps['PTT'],dict_gps['gps_date'])):
         if(ctd_ptt == gps_ptt and abs((datetime.strptime(argos_date,"%Y-%m-%d %H:%M:%S") - datetime.strptime(gps_date,"%Y-%m-%d %H:%M:%S")).total_seconds()) < 3600*3) :
             list_dbar = dict_ctd['TEMP_DBAR'][i].split(',')
             list_vals = dict_ctd['TEMP_VALS'][i].split(',')
+            num += 1
             #print('split result',list_dbar,list_vals)
             for dbar, vals in zip(list_dbar,list_vals):
                 final_dict['PTT'].append(ctd_ptt)
