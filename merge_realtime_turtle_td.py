@@ -115,12 +115,12 @@ for i,(ctd_ptt,argos_date) in enumerate(tqdm(zip(dict_ctd['PTT'],dict_ctd['argos
 
 print("write file: ")
 with open(path2 +'combined_td_gps.csv','w') as csvfile:
-    fieldnames = ['num','PTT', 'argos_date', 'depth', 'temp','lat_argos', 'lon_argos','gps_date','lat_gps', 'lon_gps']
+    fieldnames = ['dive#','PTT', 'argos_date', 'depth', 'temp','lat_argos', 'lon_argos','gps_date','lat_gps', 'lon_gps']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
    
     for num,ptt,argos_date,dbar,vals,lat1,lon1,gps_date,lat,lon in tqdm(zip(final_dict['num'],final_dict['PTT'],final_dict['argos_date'],
     final_dict['TEMP_DBAR'],final_dict['TEMP_VALS'] ,final_dict['LAT'] ,final_dict['LON'] ,final_dict['gps_date'],final_dict['lat'],
     final_dict['lon'])) :
-        writer.writerow({'num':num,'PTT': ptt, 'argos_date':argos_date, 'depth':dbar, 'temp':vals, 'lat_argos':lat, 'lon_argos':lon, 'gps_date':gps_date,'lat_gps':lat1, 'lon_gps':lon1 })
+        writer.writerow({'dive#':num,'PTT': ptt, 'argos_date':argos_date, 'depth':dbar, 'temp':vals, 'lat_argos':lat, 'lon_argos':lon, 'gps_date':gps_date,'lat_gps':lat1, 'lon_gps':lon1 })
 
