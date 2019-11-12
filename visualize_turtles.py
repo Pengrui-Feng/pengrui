@@ -26,14 +26,7 @@ obsData = pd.read_csv(path + 'combined_td_gps.csv') # has both observed and mode
 obsturtle_id=obsData['PTT']
 ids = obsturtle_id.unique() # this is the interest turtle id
 
-Time = pd.Series((datetime.strptime(x, '%m/%d/%Y %H:%M') for x in obsData['argos_date']))
-indx=np.where((Time >= start_time) & (Time < end_time))[0]
-time=Time[indx]
-time.sort()
-
-Data = obsData.ix[time.index]
-Data.index=range(len(indx))
-obsTime = pd.Series((datetime.strptime(x, '%m/%d/%Y %H:%M') for x in Data['END_DATE']))
+obsTime = pd.Series((datetime.strptime(x,'%m/%d/%Y %H:%M') for x in obsData['argos_date']))
 obsTemp = pd.Series(Data['temp'])
 obsDepth = pd.Series(Data['depth'])
 obsIDs = Data['PTT']
