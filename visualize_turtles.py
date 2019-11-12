@@ -3,8 +3,10 @@
 Modified on Nov  6 11:40:28 2019
 plot profile of each turtle and all turtles during selected days, map each turtle dive location
 @author: yifan modified by pengrui,xiaoxu
+Modified by JiM and Pengrui in Nov 2019
 """
-from matplotlib.mlab import griddata
+#from matplotlib.mlab import griddata # no longer available in Python 3
+from scipy.interpolate import griddata
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.basemap import Basemap
@@ -14,23 +16,27 @@ from turtleModule import draw_basemap
 
 ##### SET basic parameters
 path = '/home/zdong/PENGRUI/data_process/'
+#path =''
 start_time = datetime(2017,5,8) #start of time
 end_time = datetime(2018,5,1)   # end of time we want
 lonsize = [-76.8, -69.8]
 latsize = [34.9, 41.5]
 
 color=['g','darkviolet','orange','b','hotpink','c','peru','lime','brown','orangered','k','magenta','r','cyan','gray','y','pink','olive','indigo','coral','plum','violet','salmon','tan','navy','maroon','blue','peachpuff','slateblue','khaki','gold','chocolate']
+shift = 2 # offset of profiles in degC
+maxdepth = 60 # maximum depth of profile plot
 
 ##### read in csv file and creat DataFrame
-obsData = pd.read_csv(path + 'combined_td_gps.csv') # has both observed and modeled profiles
+obsData = pd.read_csv(path + 'combined_td_gps_test.csv') # has both observed and modeled profiles
 obsturtle_id=obsData['PTT']
 ids = obsturtle_id.unique() # this is the interest turtle id
 
-obsTime = pd.Series((datetime.strptime(x,'%m/%d/%Y %H:%M') for x in obsData['argos_date']))
-obsTemp = pd.Series(Data['temp'])
-obsDepth = pd.Series(Data['depth'])
-obsIDs = Data['PTT']
-dives = Data['dive_num']
+#obsTime = pd.Series((datetime.strptime(x,'%m/%d/%Y %H:%M') for x in obsData['argos_date']))
+obsTime = pd.Series((datetime.strptime(x,'%Y-%m-%d %H:%M:%S') for x in obsData['argos_date']))
+obsTemp = pd.Series(obsData['temp'])
+obsDepth = pd.Series(obsData['depth'])
+obsIDs = obsData['PTT']
+dives = obsData['dive_num']
 obsID=obsIDs.unique()
 
 mintime=obsTime[0].strftime('%m-%d-%Y')
@@ -38,21 +44,24 @@ maxtime=obsTime[len(obsTime)-1].strftime('%m-%d-%Y')
 
 
 ##### Profiles with each PTT temp VS depth
-shift = 2
-maxdepth = 60
 
-m=int(len(Data)/2)
+
+m=int(len(obsData)/2)# takes the first half of the data
 fig=plt.figure()
 ax1=fig.add_subplot(2,1,1)
 for j in range(0,m):
-    for i in range(len(ids)):       
+    for i in range(len(ids)):
+        print('turtle# =',str(ids[i]))       
         for k in range(len(dives.unique())):
-            if obsID[j]==ids[i]:  # to give the different color line for each turtle
+            #print('Dive# =',str(k))
+            if obsIDs[j]==ids[i]:  # to give the different color line for each turtle
                 ax1.plot(np.array(obsTemp[j])+shift*j,obsDepth[j],color=color[i],linewidth=1)
+                '''
                 if obsDepth[j][-1] < maxdepth:
                     ax1.text(obsTemp[j][-1]+shift*j-2,obsDepth[j][-1]+1,str(month[j])+'/'+str(day[j]),color='r',fontsize=5)
                 else:
                     ax1.text(obsTemp[j][-1]+shift*j-2,60,str(month[j])+'/'+str(day[j]),color='r',fontsize=5)
+                '''
                 ax1.set_ylim([maxdepth,-1])
                 plt.setp(ax1.get_xticklabels() ,visible=False)
 
@@ -75,7 +84,8 @@ ax2.set_title('( '+middletime+'~'+maxtime+' )')
 fig.text(0.5, 0.04, 'Temperature by time('+shift+' degree offset)', ha='center', va='center', fontsize=14)#  0.5 ,0.04 represent the  plotting scale of x_axis and y_axis
 fig.text(0.06, 0.5, 'Depth(m)', ha='center', va='center', rotation='vertical',fontsize=14)
 
-plt.savefig(path+'turtle_comparison/turtle_comparison(%s~%s).png'%(mintime,maxtime),dpi=200)
+#plt.savefig(path+'turtle_comparison/turtle_comparison(%s~%s).png'%(mintime,maxtime),dpi=200)
+plt.savefig(path+'turtle_comparison/ptt_date_dive_%s~%s.png'%(mintime,maxtime),dpi=200)
 plt.show()
 
 ##### Profiles with all turtles during the specific days
@@ -136,6 +146,7 @@ for j in range(weeks):
     obsLon=obsData['Lon']
     
     waterData=pd.read_csv('/home/zdong/PENGRUI/get_original_data/tu102_ctd.csv')
+    #waterData=pd.read_csv('tu102_ctd.csv')
     wd=waterData['MAX_DBAR'].dropna()
     Lat=waterData['lat'].dropna()
     Lon=waterData['lon'].dropna()
