@@ -2,7 +2,7 @@
 """
 Created on Tue May  2 11:40:28 2017
 comparision
-@author: yifan modified by xiaoxu
+@author: yifan modified by pengrui,xiaoxu
 """
 import pandas as pd
 import numpy as np
@@ -19,15 +19,16 @@ color=['g','darkviolet','orange','b','hotpink','c','peru','lime','brown','orange
 obsData = pd.read_csv(path + 'combined_td_gps.csv') # has both observed and modeled profiles
 #tf_index = np.where(obsData['TF'].notnull())[0]    # get the index of good data
 obsturtle_id=obsData['PTT']
-ids=obsturtle_id.unique() # this is the interest turtle id
+ids = obsturtle_id.unique() # this is the interest turtle id
 
-'''
-Time = obsData['argos_date']
 
+Time = obsData['argos_date']))
+indx=np.where((Time>=start_time) & (Time<end_time))[0]
 time=Time[indx]
 time.sort()
-'''
-#Data = obsData.ix[time.index]
+
+
+Data = obsData.ix[time.index]
 Data.index=range(len(indx))
 obsTime = Data['argos_date']
 obsTemp = Data['temp']
@@ -63,7 +64,7 @@ fig=plt.figure()
 ax1=fig.add_subplot(2,1,1)
 for j in range(0,m):
     for i in range(len(ids)):       
-        if obsID[j]==t_ids[i]:  # to give the different color line for each turtle
+        if obsID[j]==ids[i]:  # to give the different color line for each turtle
             ax1.plot(np.array(obsTemp[j])+shift*j,obsDepth[j],color=color[i],linewidth=1)#,label='id:'+str(obsID[j])
             if obsDepth[j][-1]< maxdepth:
                 ax1.text(obsTemp[j][-1]+shift*j-2,obsDepth[j][-1]+1,str(month[j])+'/'+str(day[j]),color='r',fontsize=5)
