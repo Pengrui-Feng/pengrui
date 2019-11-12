@@ -12,8 +12,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from turtleModule import draw_basemap
 
-#################################################################
-#SET basic parameters
+##### SET basic parameters
 path = '/home/zdong/PENGRUI/data_process/'
 start_time = datetime(2017,5,8) #start of time
 end_time = datetime(2018,5,1)   # end of time we want
@@ -22,7 +21,7 @@ latsize = [34.9, 41.5]
 
 color=['g','darkviolet','orange','b','hotpink','c','peru','lime','brown','orangered','k','magenta','r','cyan','gray','y','pink','olive','indigo','coral','plum','violet','salmon','tan','navy','maroon','blue','peachpuff','slateblue','khaki','gold','chocolate']
 
-#
+##### read in csv file and creat DataFrame
 obsData = pd.read_csv(path + 'combined_td_gps.csv') # has both observed and modeled profiles
 obsturtle_id=obsData['PTT']
 ids = obsturtle_id.unique() # this is the interest turtle id
@@ -34,7 +33,7 @@ time.sort()
 
 Data = obsData.ix[time.index]
 Data.index=range(len(indx))
-obsTime = pd.Series(Data['argos_date'])
+obsTime = pd.Series((datetime.strptime(x, '%m/%d/%Y %H:%M') for x in Data['END_DATE']))
 obsTemp = pd.Series(Data['temp'])
 obsDepth = pd.Series(Data['depth'])
 obsIDs = Data['PTT']
@@ -56,7 +55,7 @@ for j in range(0,m):
     for i in range(len(ids)):       
         for k in range(len(dives.unique())):
             if obsID[j]==ids[i]:  # to give the different color line for each turtle
-                ax1.plot(np.array(obsTemp[j])+shift*j,obsDepth[j],color=color[i],linewidth=1)#,label='id:'+str(obsID[j])
+                ax1.plot(np.array(obsTemp[j])+shift*j,obsDepth[j],color=color[i],linewidth=1)
                 if obsDepth[j][-1] < maxdepth:
                     ax1.text(obsTemp[j][-1]+shift*j-2,obsDepth[j][-1]+1,str(month[j])+'/'+str(day[j]),color='r',fontsize=5)
                 else:
@@ -78,12 +77,12 @@ for j in range(m,len(Data)):
                 plt.setp(ax1.get_xticklabels() ,visible=False)
 
 middletime=obsTime[m].strftime('%m-%d-%Y')        
-ax1.set_title('profiles color-coded-by-turtle( '+mintime+'~'+middletime+' )')#('%s profiles(%s~%s)'% (e,obsTime[0],obsTime[-1]))
+ax1.set_title('profiles color-coded-by-turtle( '+mintime+'~'+middletime+' )')
 ax2.set_title('( '+middletime+'~'+maxtime+' )')
 fig.text(0.5, 0.04, 'Temperature by time('+shift+' degree offset)', ha='center', va='center', fontsize=14)#  0.5 ,0.04 represent the  plotting scale of x_axis and y_axis
 fig.text(0.06, 0.5, 'Depth(m)', ha='center', va='center', rotation='vertical',fontsize=14)
 
-plt.savefig(path+'turtle_comparison/turtle_comparison(%s~%s).png'%(mintime,maxtime),dpi=200)#put the picture to the file"turtle_comparison"
+plt.savefig(path+'turtle_comparison/turtle_comparison(%s~%s).png'%(mintime,maxtime),dpi=200)
 plt.show()
 
 ##### Profiles with all turtles during the specific days
@@ -103,11 +102,10 @@ for i in range(len(obsID)):
     ax1=fig.add_subplot(1,1,1)
     l=len(Data_e)/40.0
     for j in Data_e.index:
-        
         for c in range(len(ids)):
             if e==ids[c]:
                ax1.plot(np.array(Temp_e[j])+4*j,Depth_e[j],color=color[c],linewidth=1)
-        if Depth_e[j][-1]<maxdepth:
+        if Depth_e[j][-1] < maxdepth:
             ax1.text(Temp_e[j][-1]+shift*j-l,Depth_e[j][-1]+2,round(Temp_e[j][-1],1),color='r',fontsize=6)
         else:
             ax1.text(Temp_e[j][-1]+shift*j-l,60,round(Temp_e[j][-1],1),color='r',fontsize=6)
