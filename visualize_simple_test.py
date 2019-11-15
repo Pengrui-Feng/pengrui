@@ -22,8 +22,6 @@ with open(path+"combined_td_gps.csv","r") as csvfile:
         ppt_dict[row["PTT"]][row["dive_num"]][0].append(row["depth"])
         ppt_dict[row["PTT"]][row["dive_num"]][1].append(row["temp"])
 
-
-
 for ptt,values in ppt_dict.items():
     fig=plt.figure("%sImage"%ptt)  
     i = 0
@@ -42,5 +40,3 @@ for ptt,values in ppt_dict.items():
     plt.title('%s'%ptt)
     #plt.savefig(path+'Image/%s#turtle.png'%ptt,dpi=200)
     plt.show()
-
-
