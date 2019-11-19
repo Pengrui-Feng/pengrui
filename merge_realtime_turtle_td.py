@@ -10,7 +10,7 @@ import csv
 from tqdm import tqdm
 
 path1 = '/home/zdong/PENGRUI/get_original_data/'
-path2 = '/home/zdong/PENGRUI/data_process/'
+path2 = '/home/zdong/PENGRUI/summary/'
 
 #convert time format
 df = pd.read_csv(path1 + 'tu102_ctd.csv')
