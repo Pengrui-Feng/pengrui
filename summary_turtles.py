@@ -12,8 +12,7 @@ import numpy as np
 import csv
 
 #input csv file,
-path = '/home/zdong/PENGRUI/data_process/'
-df = pd.read_csv(path + "combined_td_gps.csv")#,usecols=['PTT','argos_date','argos_time','lat_argos','lon_argos']
+df = pd.read_csv("combined_td_gps.csv")#,usecols=['PTT','argos_date','argos_time','lat_argos','lon_argos']
 df['argos_date'] = pd.to_datetime(df['argos_date'])
 #a = df.set_index('PTT')
 
