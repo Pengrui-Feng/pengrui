@@ -5,35 +5,30 @@ plot profile of each turtle and all turtles during selected days, map each turtl
 @author: yifan modified by pengrui,xiaoxu
 Modified by JiM and Pengrui in Nov 2019
 """
-#from matplotlib.mlab import griddata # no longer available in Python 3
-#from scipy.interpolate import griddata
+
 import matplotlib.pyplot as plt
 import numpy as np
-#from mpl_toolkits.basemap import Basemap
 import pandas as pd
 from datetime import datetime, timedelta
 from turtleModule import str2ndlist
 
 ##### SET basic parameters
-path = '/home/zdong/PENGRUI/data_process/'
-#path =''
-start_time = datetime(2018,5,8) #start of time
-end_time = datetime(2018,8,1)   # end of time we want
-lonsize = [-76.8, -69.8]
-latsize = [34.9, 41.5]
+
+start_time = datetime(2018,7,25) #start of time
+end_time = datetime(2018,8,1)   # end of time, create a forder named by 'IOError'
 
 color=['g','darkviolet','orange','b','hotpink','c','peru','lime','brown','orangered','k','magenta','r','cyan','gray','y','pink','olive','indigo','coral','plum','violet','salmon','tan','navy','maroon','blue','peachpuff','slateblue','khaki','gold','chocolate']
 shift = 2 # offset of profiles in degC
 maxdepth = 60 # maximum depth of profile plot
 t_ids=[161291, 161292, 161296, 172191, 175934, 175935, 161295, 175939,161299, 161303, 161294, 161297, 161298, 161300, 161301, 161304,172179, 172188, 175938, 175932, 175936, 175940]
 
-obsData = pd.read_csv('ctd_extract_good.csv') # has both observed and modeled profiles
+obsData = pd.read_csv('merge_td_gps.csv') # has both observed and modeled profiles
 obsturtle_id=obsData['PTT']
 ids=obsturtle_id.unique()#118905 # this is the interest turtle id
-#print ids
+
 Time = pd.Series((datetime.strptime(x, '%m/%d/%y %H:%M:%S') for x in obsData['END_DATE']))
-indx=np.where((Time>=end_time-timedelta(days=7)) & (Time<end_time))[0]
-#indx=np.where((Time>=start_time) & (Time<end_time))[0]
+#indx=np.where((Time>=end_time-timedelta(days=7)) & (Time<end_time))[0]
+indx=np.where((Time>=start_time) & (Time<end_time))[0]
 time=Time[indx]
 time.sort()
 
@@ -57,7 +52,7 @@ data['Lat']=Data['lat']
 data['Lon']=Data['lon']
 data['Depth']=Data['TEMP_DBAR']
 data['Temperature']=Data['TEMP_VALS']
-data.to_csv('each_data/data(%s~%s).csv'%(mintime,maxtime))
+data.to_csv('period_turtles_data/data_%s~%s.csv'%(mintime,maxtime))
 
 month,day=[],[]
 for d in obsTime.index:
@@ -89,12 +84,12 @@ for j in range(m,len(Data)):
             ax2.set_ylim([60,-1])
             plt.setp(ax2.get_xticklabels() ,visible=False)
 middletime=obsTime[m].strftime('%m-%d-%Y')        
-ax1.set_title('profiles color-coded-by-turtle( '+mintime+'~'+middletime+' )')#('%s profiles(%s~%s)'% (e,obsTime[0],obsTime[-1]))
-ax2.set_title('( '+middletime+'~'+maxtime+' )')
+ax1.set_title('profiles color-coded-by-turtle during '+mintime+' ~ '+middletime )#('%s profiles(%s~%s)'% (e,obsTime[0],obsTime[-1]))
+ax2.set_title(middletime+' ~ '+maxtime)
 fig.text(0.5, 0.04, 'Temperature by time(4 degree offset)', ha='center', va='center', fontsize=14)#  0.5 ,0.04 represent the  plotting scale of x_axis and y_axis
 fig.text(0.06, 0.5, 'Depth(m)', ha='center', va='center', rotation='vertical',fontsize=14)
 
-plt.savefig('turtle_comparison/turtle_comparison(%s~%s).png'%(mintime,maxtime),dpi=200)#put the picture to the file"turtle_comparison"
+plt.savefig('period_turtles_profile/profile_%s~%s.png'%(mintime,maxtime),dpi=200)#put the picture to the file"turtle_comparison"
 plt.show()
 
 for i in range(len(obsIDs)):
@@ -142,7 +137,5 @@ for i in range(len(obsIDs)):
     else:
         ax1.set_title(str(e) +'_profiles( '+mintime_e+'~'+maxtime_e+' )')#('%s profiles(%s~%s)'% (e,obsTime[0],obsTime[-1]))
     fig.text(0.06, 0.5, 'Depth(m)', ha='center', va='center', rotation='vertical',fontsize=14)
-    plt.savefig('each_profiles/%s~%s/%s_profiles(%s~%s).png'% (mintime,maxtime,e,mintime,maxtime),dpi=200)#put the picture to the file "each_profiles"
+    plt.savefig('per_turtle_period/%s~%s/%s_profiles_%s~%s.png'% (mintime,maxtime,e,mintime,maxtime),dpi=200)#put the picture to the file "each_profiles"
     plt.show()
-
-
