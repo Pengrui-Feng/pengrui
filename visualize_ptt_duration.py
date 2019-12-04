@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Dec  2 09:42:22 2019
-plot and display ptt-date
+plot and display duration of erery ptt
 @author: pengrui
 """
 import matplotlib.dates as dt
