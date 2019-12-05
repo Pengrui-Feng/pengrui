@@ -50,5 +50,5 @@ ctd['TF'] = ctd_TF
 #print(ctd)
 print('{0} is OK(including "null" lon and lat values.).'.format(len(ctd_TF)/28975.0))#28975 is the length of ctd csv
 print('{0} is OK.'.format(len(ctd_TF)/15657.0))
-print("save as 'merge_td_gps.csv'")
+print("save as '%s_merge_td_gps.csv'"%db)
 ctd.to_csv(path2 + db+'_merge_td_gps.csv')
