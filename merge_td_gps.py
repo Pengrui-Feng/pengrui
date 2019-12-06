@@ -9,7 +9,7 @@ from datetime import datetime,timedelta
 import csv
 from tqdm import tqdm
 
-db= 'tu74' #tu73,tu74,tu94,tu98,tu99,tu102
+db= 'tu102' #tu73,tu74,tu94,tu98,tu99,tu102
 path1 = '/home/zdong/PENGRUI/get_original_data/'
 path2 = '/home/zdong/PENGRUI/merge/'
 
@@ -56,7 +56,6 @@ with open( path2 + db+'_gps.csv','r') as csvfile:
         dict_gps['LAT'].append(row['LAT'])
         dict_gps['LON'].append(row['LON'])
 
-
 #create a new final dictionary
 final_dict = {}
 final_dict['num'] = []
@@ -71,7 +70,7 @@ final_dict['LAT'] = []
 final_dict['LON'] = []
 
 #compute min time diffirence to avoid multiple iterations
-print("\nmin time computing,about 2 minites: ")
+print("\n%s min time computing,about 2 minites: "%db)
 time_dict = {}
 for ctd_ptt,argos_date in tqdm(zip(dict_ctd['PTT'],dict_ctd['argos_date'])):
     diff_time = []
@@ -82,10 +81,8 @@ for ctd_ptt,argos_date in tqdm(zip(dict_ctd['PTT'],dict_ctd['argos_date'])):
     if ctd_ptt not in time_dict.keys():
         time_dict[ctd_ptt] = {}
     time_dict[ctd_ptt][argos_date]=diff_time
-#print(time_dict)
 
-
-print("\nmerging csv,about 2 minites: ")
+print("\n%s merging csv,about 2 minites: "%db)
 num=0
 tmp_ptt = dict_ctd['PTT'][0]
 for i,(ctd_ptt,argos_date) in enumerate(tqdm(zip(dict_ctd['PTT'],dict_ctd['argos_date']))):
@@ -115,8 +112,8 @@ for i,(ctd_ptt,argos_date) in enumerate(tqdm(zip(dict_ctd['PTT'],dict_ctd['argos
                 final_dict['lon'].append(dict_ctd['lon'][i])
                 break
 
-print("\nwriting file: ")
-with open(path2 +'2combined_td_gps.csv','w') as csvfile:
+print("\n%s outputting file: "%db)
+with open(path2 +db+'_merge_td_gps.csv','w') as csvfile:
     fieldnames = ['dive_num','PTT', 'argos_date', 'depth', 'temp','lat_argos', 'lon_argos','gps_date','lat_gps', 'lon_gps']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
