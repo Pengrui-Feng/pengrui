@@ -12,14 +12,14 @@ import glob
 import time
 import csv
 #path1='/home/zdong/PENGRUI/summary/'
-csv_list = glob.glob('*_Summary.csv') #
+csv_list = glob.glob('*_Summary.csv') #打开文件夹下全部的CSV文件
 print('%s csvfiles searched in total'% len(csv_list))
 #time.sleep(2)
 print('processing............')
 fig =plt.figure()
 color=['g','r','m','brown','b','gray','peru']
 k=0
-for i in csv_list: #
+for i in csv_list: #i既是正在处理的文件名
     df = pd.read_csv(i)
     ptt = df['PTT']
     tracks=df['length_of_track']
@@ -31,7 +31,8 @@ for i in csv_list: #
         ss = dt.date2num(s)
         ee = dt.date2num(e)
         plt.plot([ss,ee],[j,j], marker = ".",color=color[k])
-    plt.text(ss,j,csv_list[k],size=10)       
+    a=csv_list[k].find('_')
+    plt.text(ss,j,csv_list[k][0:a],size=14,color=color[k])       
     k+=1
 
 ax = plt.gca()
