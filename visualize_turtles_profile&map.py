@@ -160,7 +160,7 @@ obsLon=obsdata['Lon']
 obsturtle_id=obsdata['turtle_id']
 ids=obsturtle_id.unique() # this is the interest turtle id
     
-waterData=pd.read_csv('tu94_depthbottom.csv')
+waterData=pd.read_csv('depthbottom.csv')
 wd=waterData['depth_bottom'].dropna()
 Lat=waterData['lat'].dropna()
 Lon=waterData['lon'].dropna()
