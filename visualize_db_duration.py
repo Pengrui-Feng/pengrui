@@ -48,5 +48,5 @@ plt.yticks([-1,26],['',''])
 fig.autofmt_xdate() # 自动旋转xlabel 
 plt.tick_params(axis='y', which='both', labelright='on')
 plt.title('database_duration_comparison')
-plt.savefig('database_duration_comparison.png',dpi=200)
+plt.savefig('visualize_db_duration.png',dpi=200)
 print('Finish！')
