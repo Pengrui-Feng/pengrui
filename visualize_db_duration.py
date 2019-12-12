@@ -11,15 +11,14 @@ import pandas as pd
 import glob
 import time
 import csv
-#path1='/home/zdong/PENGRUI/summary/'
-csv_list = glob.glob('*_Summary.csv') #打开文件夹下全部的CSV文件
+
+csv_list = glob.glob('*_Summary.csv')  # search csv files in current folder
 print('%s csvfiles searched in total'% len(csv_list))
-#time.sleep(2)
 print('processing............')
 fig =plt.figure()
 color=['g','r','m','brown','b','gray','peru']
 k=0
-for i in csv_list: #i既是正在处理的文件名
+for i in csv_list: #i is a filename which is processed
     df = pd.read_csv(i)
     ptt = df['PTT']
     tracks=df['length_of_track']
@@ -40,13 +39,12 @@ formatter = dt.DateFormatter('%Y-%m-%d')
 ax.xaxis.set_major_formatter(formatter)
 ax.xaxis.grid(True)  
 ax.yaxis.grid(True)
-firstdays=dt.MonthLocator() # 获取每月第一日数据
-locate=dt.MonthLocator(range(1, 13), bymonthday=1, interval=6) # 获取每3个月第一日数据
-
-ax.xaxis.set_major_locator(locate) # 设定主刻度
-ax.xaxis.set_minor_locator(firstdays) # 设定次刻度
+firstdays=dt.MonthLocator() # Get data for the first day of the month
+locate=dt.MonthLocator(range(1, 13), bymonthday=1, interval=6) # Get data on the first day of every 6 months
+ax.xaxis.set_major_locator(locate) # Set the main scale
+ax.xaxis.set_minor_locator(firstdays) # Set minor scale
 plt.yticks([-1,26],['',''])
-fig.autofmt_xdate() # 自动旋转xlabel 
+fig.autofmt_xdate() # Auto rotate xlabel 
 plt.tick_params(axis='y', which='both', labelright='on')
 plt.title('database_duration_comparison')
 plt.savefig('visualize_db_duration.png',dpi=200)
