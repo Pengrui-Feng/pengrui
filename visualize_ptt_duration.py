@@ -26,19 +26,20 @@ for i in df.index:
     ss = dt.date2num(s)
     ee = dt.date2num(e)
     plt.plot([ss,ee],[i,i], marker = ".")
-    #plt.text(ss,i,tracks[i],size=6)
+    a=tracks[i].find(' ')
+    plt.text(ss,i,tracks[i][0:a+5],size=10)
 ax = plt.gca()
 formatter = dt.DateFormatter('%Y-%m-%d')
 ax.xaxis.set_major_formatter(formatter)
-ax.xaxis.grid(True)  
+ax.xaxis.grid(True)
 ax.yaxis.grid(True)
-firstdays=dt.MonthLocator() # 获取每月第一日数据
-locate=dt.MonthLocator(range(1, 13), bymonthday=1, interval=3) # 获取每3个月第一日数据
+firstdays=dt.MonthLocator() # Get data for the first day of the month
+locate=dt.MonthLocator(range(1, 13), bymonthday=1, interval=3) # Get data on the first day of every 3 months
 
-ax.xaxis.set_major_locator(locate) # 设定主刻度
-ax.xaxis.set_minor_locator(firstdays) # 设定次刻度
+ax.xaxis.set_major_locator(locate) # Set the main scale
+ax.xaxis.set_minor_locator(firstdays) # Set minor scale
 
-fig.autofmt_xdate() # 自动旋转xlabel 
+fig.autofmt_xdate() # Auto rotate xlabel  
 plt.tick_params(axis='y', which='both', labelright='on') # 
 #tu73,tu74,tu94,tu98,tu99,tu102
 plt.yticks([-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],['PTT','118940','118941','118942','118943','118944','118945','118946','118947','118948','118949','118950','118951','118952','118953','118954']) #tu_73
