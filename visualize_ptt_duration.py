@@ -27,7 +27,7 @@ for i in df.index:
     ee = dt.date2num(e)
     plt.plot([ss,ee],[i,i], marker = ".")
     a=tracks[i].find(' ')
-    plt.text(ss,i,tracks[i][0:a+5],size=10)
+    plt.text(ss,i+0.1,tracks[i][0:a+5],size=9)
 ax = plt.gca()
 formatter = dt.DateFormatter('%Y-%m-%d')
 ax.xaxis.set_major_formatter(formatter)
