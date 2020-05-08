@@ -17,7 +17,7 @@ print('%s csvfiles searched in total'% len(csv_list))
 print('processing............')
 fig =plt.figure(figsize=(15,10))
 color=['g','darkviolet','orange','b','hotpink','c','peru','lime','brown','orangered','k','magenta','r','cyan','gray','y','pink','olive','indigo','coral','plum','violet','salmon','tan','navy','maroon','blue','peachpuff','slateblue','khaki','gold','chocolate']
-
+p=0
 k=0
 for i in csv_list: #i is a filename which is processed
     df = pd.read_csv(i)
@@ -30,11 +30,11 @@ for i in csv_list: #i is a filename which is processed
         e = datetime.strptime(end[j], '%Y-%m-%d %H:%M:%S').date()
         ss = dt.date2num(s)
         ee = dt.date2num(e)
-        plt.plot([ss,ee],[j,j], marker = ".",color=color[k])
+        plt.plot([ss,ee],[j+p,j+p], marker = ".",color=color[k])
     a=csv_list[k].find('_')
-    plt.text(ss,j+0.3,csv_list[k][40:a],size=14,color=color[k])       
+    plt.text(ss,j+0.3+p,csv_list[k][40:a],size=14,color=color[k])       
     k+=1
-
+    p+=0.2
 ax = plt.gca()
 formatter = dt.DateFormatter('%Y-%m-%d')
 ax.xaxis.set_major_formatter(formatter)
@@ -47,6 +47,6 @@ ax.xaxis.set_minor_locator(firstdays) # Set minor scale
 plt.yticks([-1,26],['',''])
 fig.autofmt_xdate() # Auto rotate xlabel 
 plt.tick_params(axis='y', which='both', labelright='on')
-plt.title('database_duration_comparison')
-plt.savefig('visualize_db_duration.png',dpi=200)
+plt.title('timeseries_duration_w_gps')
+plt.savefig('visualize_db_duration_w_gps.png',dpi=200)
 print('Finish！')
