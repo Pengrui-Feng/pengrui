@@ -12,11 +12,12 @@ import glob
 import time
 import csv
 
-csv_list = glob.glob('*_Summary.csv')  # search csv files in current folder
+csv_list = glob.glob('/content/drive/My Drive/PENGRUI/summary/*_Summary.csv')  # search csv files in current folder
 print('%s csvfiles searched in total'% len(csv_list))
 print('processing............')
-fig =plt.figure()
-color=['g','r','m','brown','b','gray','peru']
+fig =plt.figure(figsize=(15,10))
+color=['g','darkviolet','orange','b','hotpink','c','peru','lime','brown','orangered','k','magenta','r','cyan','gray','y','pink','olive','indigo','coral','plum','violet','salmon','tan','navy','maroon','blue','peachpuff','slateblue','khaki','gold','chocolate']
+
 k=0
 for i in csv_list: #i is a filename which is processed
     df = pd.read_csv(i)
@@ -31,16 +32,16 @@ for i in csv_list: #i is a filename which is processed
         ee = dt.date2num(e)
         plt.plot([ss,ee],[j,j], marker = ".",color=color[k])
     a=csv_list[k].find('_')
-    plt.text(ss,j,csv_list[k][0:a],size=14,color=color[k])       
+    plt.text(ss,j+0.3,csv_list[k][40:a],size=14,color=color[k])       
     k+=1
 
 ax = plt.gca()
 formatter = dt.DateFormatter('%Y-%m-%d')
 ax.xaxis.set_major_formatter(formatter)
-ax.xaxis.grid(True)  
-ax.yaxis.grid(True)
+#ax.xaxis.grid(True)  
+#ax.yaxis.grid(True)
 firstdays=dt.MonthLocator() # Get data for the first day of the month
-locate=dt.MonthLocator(range(1, 13), bymonthday=1, interval=6) # Get data on the first day of every 6 months
+locate=dt.MonthLocator(range(1, 13), bymonthday=1, interval=12) # Get data on the first day of every 6 months
 ax.xaxis.set_major_locator(locate) # Set the main scale
 ax.xaxis.set_minor_locator(firstdays) # Set minor scale
 plt.yticks([-1,26],['',''])
