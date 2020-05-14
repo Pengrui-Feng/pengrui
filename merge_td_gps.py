@@ -1,8 +1,8 @@
 '''
 Created on 11 Oct  2019
 @author: pengrui
-
 merge two csv files from turtles including 1) 'CTD' and 2) 'GPS'
+output results including split and nosplit
 '''
 import pandas as pd
 from datetime import datetime,timedelta
